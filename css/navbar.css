@@ -1,0 +1,46 @@
+/*header styling*/
+
+header{
+    width: 100vw;
+    height: 2.8rem;
+    position: fixed;
+    top: 0;
+    z-index: 1;
+    background-color: rgba(46,46,64,0.52);
+
+}
+#logo{
+    width: max-content;
+    justify-content: flex-start;
+}
+#logo ul,#logo h1{
+    height: 90%;
+    margin-left: 1rem;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    font-style: oblique;
+}
+#logo h1{
+    text-shadow: 2px 1px rgba(122,105,189,0.94);
+}
+
+#search-bar{
+    height: 90%;
+    border: 2px solid rgba(46,46,64,0.94);
+    width: 25%;
+}
+header div ul{
+    width: 9%;
+}
+header div input{
+    background-color: inherit;
+    border-right: 1px solid rgba(46,46,64,0.94);
+    width: 89%;
+}
+nav{
+    height: 90%;
+    width: 25%;
+}
+header nav ul{
+    width: 90%;
+}

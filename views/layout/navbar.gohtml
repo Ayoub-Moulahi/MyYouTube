@@ -1,0 +1,36 @@
+{{define "navbar"}}
+    <header class="centered-vertically">
+        <div id="logo" class="centered-vertically">
+            <ul class="centered">
+                <a href="/"><li class="centered"> <svg class="centered"><use href="#favicon-svg"></use></svg> </li></a>
+            </ul>
+            <h1>Youtue</h1>
+        </div>
+        <div class="centered-vertically" id="search-bar">
+            <input type="search" placeholder="Search ...." onautocomplete="on">
+            <ul>
+                <a href="/search"><li class="centered" ><svg><use href="#search-svg"></use></svg></li></a>
+            </ul>
+        </div>
+        <nav class="centered-vertically">
+            <ul class="centered-vertically">
+
+                <li ><a href="/" class="hover_to-display"><svg><use href="#home-svg"></use></svg></a>
+                    <p class="hide">Home</p>
+                </li>
+
+                <li ><a href="/channel" class="hover_to-display"><svg><use href="#channel-svg"></use></svg></a>
+                    <p class="hide">Channel</p>
+                </li>
+                <li ><a href="/contact" class="hover_to-display"><svg><use href="#contact-us-svg"></use></svg></a>
+                    <p class="hide">Contact</p>
+                </li>
+                <li ><a href="/login" class="hover_to-display"><svg><use href="#logIN-svg"></use></svg></a>
+                    <p class="hide">Log IN</p>
+                </li>
+            </ul>
+        </nav>
+
+    </header>
+
+{{end}}

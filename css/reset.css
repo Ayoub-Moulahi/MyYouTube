@@ -1,0 +1,36 @@
+html, body, div, span, h1, h2, h3, h4, h5, h6, button, p, blockquote, pre, a, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strong, sub, sup, b, u, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, figure, figcaption, footer, header, nav, output, section, time, mark, audio, video, input, textarea, select {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    box-sizing: border-box;
+    border-radius: 0;
+    outline: none;
+    color: inherit;
+}
+
+ol, ul ,li{
+    /* no bullets in lists */
+    list-style: none;
+}
+
+a {
+    /* no underline */
+    text-decoration: none;
+    cursor: grab;
+
+
+}
+
+input, select, progress{
+    height: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+svg {
+    width: 1rem;
+    height: 1rem;
+    fill: rgba(122,105,189,0.94);
+}

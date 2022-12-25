@@ -1,0 +1,43 @@
+.centered-vertically{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.centered{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hide{
+    display: none;
+}
+.hover_to-display:hover + .hide{
+    display: block;
+    color: grey;
+    background-color: white;
+}
+#container{
+    margin-top: 1.5rem;
+    height: calc(100vh - 2.8rem);
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+    background-image: linear-gradient( #C1C5D6, grey);
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+footer{
+    height: 1.5rem;
+    align-self: flex-end;
+    width: 100vw;
+    display: flex;
+    background-color: #1ecbe1;
+    color: whitesmoke;
+}
