@@ -1,0 +1,31 @@
+{{define "main_content"}}
+    <main id="sign_in_form">
+        <p class="form_text">------ Create An Account ------</p>
+        <form action="/signin" method="post">
+            <div class="inputdiv">
+                <label for="Name">Full Name</label>
+                <input type="text" name="Name" id="Name" placeholder="please enter your full name here" autofocus >
+            </div>
+            <br>
+            <div class="inputdiv">
+                <label for="email">Email</label>
+                <input type="text" name="email" id="email" placeholder="enter you email here" required>
+            </div>
+            <br>
+            <div class="inputdiv">
+                <label for="date">date of birth</label>
+                <input type="date" name="date" id="date" placeholder="your date of birth">
+            </div>
+            <br>
+            <br>
+            <div class="inputdiv">
+                <label for="pwd">password</label>
+                <input type="password" name="password" id="pwd" required placeholder="Password ...">
+                <span class="hide error"></span>
+            </div>
+            <br>
+            <button type="submit" class="btn_submit">Sign IN</button>
+        </form>
+
+    </main>
+{{end}}

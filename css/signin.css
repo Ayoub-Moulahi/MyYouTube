@@ -1,0 +1,31 @@
+#container #sign_in_form   {
+    align-self: center;
+    height: 75vh;
+    width: 30vw;
+    border:2px  solid saddlebrown;
+    border-radius:  1% 20% / 10% 20%;
+    background-color: rgba(46,46,64,0.5);
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+
+}
+
+.inputdiv{
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+}
+.inputdiv>label{
+    width: 100%;
+    color: whitesmoke;
+}
+.inputdiv>input{
+    width: 100%;
+    border: 1px dashed cyan;
+    border-radius: 0 14px;
+    height: 2.3rem;
+    padding-left: 15px;
+
+}
