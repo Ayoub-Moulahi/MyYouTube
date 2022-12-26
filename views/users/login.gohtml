@@ -1,0 +1,28 @@
+{{define "main_content"}}
+
+    <main id="log_in_content" class="centered">
+
+        <section>
+            <p class="form_text">Sign In With </p>
+            <ul class="centered-vertically" style="width: 40%">
+                <li>  <a  href="http://localhost:3000/auth/facebook/youTube_clone" ><svg class="social_svg"><use xlink:href="#facebook-svg"></use></svg></a></li>
+                <li> <a  href="http://localhost:3000/auth/twitter/youTube_clone" ><svg class="social-svg"><use xlink:href="#twitter-svg"></use></svg></a></li>
+                <li> <a  href="http://localhost:3000/auth/google/youTube_clone" ><svg class="social-svg"><use xlink:href="#google-svg"></use></svg></a></li>
+
+            </ul>
+
+            <p class="form_text">------------ Or -------------</p>
+            <form action="/login" method="post" id="login_form" class="centered_wrap">
+
+                <input type="text" name="email" id="email" placeholder="email ...." required>
+                <br>
+                <input type="password" name="pwd" id="pwd" required placeholder="password ...">
+                <button type="submit" class="btn_submit">Sign IN</button>
+            </form>
+            <p class="form_text"> or create an <a href="/signin">account</a> </p>
+        </section>
+
+    </main>
+
+
+{{end}}
