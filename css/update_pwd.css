@@ -1,0 +1,15 @@
+#user_password_update #password_update{
+    width: 45%;
+    padding: 2rem;
+}
+#password_update h2{
+    margin-bottom: 3rem;
+    font-family: "Fira Code Medium",sans-serif;
+    font-size: 2rem;
+    font-style: oblique;
+}
+#password_update p {
+    margin-bottom: 2.5rem;
+    font-size: 1.5rem;
+    font-style: italic;
+}

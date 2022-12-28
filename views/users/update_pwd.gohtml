@@ -1,0 +1,29 @@
+{{define "main_content"}}
+    <main id="user_password_update">
+        <div id="password_update">
+            <!--            TODO: fix content with dynamic content and correct link-->
+            <h2>Hey <em>UserName:</em> </h2>
+            <p>You're about to change your password</p>
+
+            <form action="/user/update" method="post">
+                <div class="inputdiv">
+                    <label for="current_pwd">Current password</label>
+                    <input type="password" name="password" id="current_pwd" required placeholder="Password ...">
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <label for="new_pwd">New Password</label>
+                    <input type="password" name="password" id="new_pwd" required placeholder="Password ...">
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <label for="retype_pwd">Retype New Password</label>
+                    <input type="password" name="password" id="retype_pwd" required placeholder="Password ...">
+                </div>
+                <br>
+                <br>
+                <button type="submit" class="btn_submit">Update Password</button>
+            </form>
+        </div>
+    </main>
+{{end}}
