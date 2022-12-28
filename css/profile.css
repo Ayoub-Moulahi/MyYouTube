@@ -1,0 +1,35 @@
+#user_profile{
+    padding: 1rem;
+}
+#profile{
+    padding: 1.5rem;
+    border-bottom: 1px solid darkslategrey;
+}
+#activities{
+    width: 60%;
+    padding: 2rem;
+}
+#profile h1 ,#activities h1{
+    font-size: 3rem;
+    font-style: italic;
+    font-family: Gilroy-Bold,sans serif;
+    color: #E0D8B0;
+
+}
+#profile >p ,#activities p{
+    font-size:2rem;
+    font-style: italic;
+    font-family: Gilroy-Semibold,sans-serif;
+
+}
+em{
+    color:#DC5F00;
+}
+#activities p,#activities h1{
+    border-bottom: 1px solid darkslategrey;
+    text-align: center;
+    width: 70%;
+}
+#activities h1{
+    margin-bottom: 2rem;
+}
