@@ -1,0 +1,37 @@
+{{define "main_content"}}
+    <main id="user_settings">
+        <div id="setting">
+            <!--            TODO: fix content with dynamic content-->
+            <h3>Join date:<em>date+number of days since</em> </h3>
+
+
+            <form action="/user/update" method="post">
+                <div class="inputdiv">
+                    <label for="Name">Profile Name</label>
+                    <input type="text" name="Name" id="Name" placeholder="userName" autofocus >
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" placeholder="userEmail" required>
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <label for="pwd">password</label>
+                    <button type="submit" class="btn_submit">Update password</button>
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <label for="date">date of birth</label>
+                    <input type="text" name="date" id="date" placeholder="userBirthday">
+                </div>
+                <br>
+
+                <br>
+                <button type="submit" class="btn_submit">Update Profile</button>
+            </form>
+        </div>
+    </main>
+
+
+{{end}}
