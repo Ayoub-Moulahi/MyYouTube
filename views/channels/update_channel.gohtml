@@ -1,0 +1,15 @@
+{{define "main_content"}}
+    <main id="update_channel_form">
+        <h1 class="form_title">Change Channel's Name</h1>
+        <form action="/channels/update" method="post">
+            <div class="inputdiv">
+                <label for="channel_Name">New Channel Name</label>
+                <input type="text" name="channel_Name" id="channel_Name" placeholder=" channel name ..." autofocus required >
+            </div>
+            <br>
+
+            <button type="submit" class="btn_submit">Update Channel</button>
+        </form>
+
+    </main>
+{{end}}
