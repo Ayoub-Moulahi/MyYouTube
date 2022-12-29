@@ -1,0 +1,31 @@
+
+#contact{
+    width:60% ;
+    height: 80%;
+    background-image: url("../views/static/background/2391514.jpg");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+#contact form,#contact h1,#contact>h4{
+    margin-left:20% ;
+
+    width: 60%;
+}
+#contact h1{
+    text-align: center;
+    font-family: "Fira Code Medium", sans-serif;
+    font-weight: bold;
+    font-size: 2rem;
+    margin-top: 1.6rem;
+    margin-bottom: 1.6rem;
+    color: #E0D8B0;
+}
+#contact h4{
+    font-size: 1.25rem;
+    color: lightgoldenrodyellow;
+}
+#contact h4 em{
+    color:#DC5F00;
+}

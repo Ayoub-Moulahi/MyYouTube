@@ -1,0 +1,30 @@
+{{define "main_content"}}
+    <main id="contact_page" class="centered_wrap">
+        <div id="contact">
+            <h1>GET IN TOUCH</h1>
+            <h4><em>Phone:</em>+216 54 611 086</h4>
+            <h4 style="margin-bottom: 2rem"> <em>Email:</em>Ayoub-Moulahi@protonmail.ch</h4>
+            <!--TODO: update form action-->
+            <form action="#" method="post">
+                <div class="inputdiv">
+                    <input type="text" name="Name" id="Name" placeholder="Name" autofocus >
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <input type="text" name="email" id="email" placeholder="Email" required>
+                </div>
+
+                <br>
+                <div class="inputdiv">
+                    <input type="tel" name="phone" id="phone" placeholder="Phone number">
+                </div>
+                <br>
+                <div class="inputdiv">
+                    <textarea type="text" name="issue" id="issue" placeholder="your message ..." required></textarea>
+                </div>
+                <br>
+                <button type="submit" class="btn_submit">Send Message</button>
+            </form>
+        </div>
+    </main>
+{{end}}
