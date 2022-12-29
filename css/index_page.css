@@ -1,0 +1,38 @@
+
+#user_index #index  {
+    min-height: 45%;
+    align-self: center;
+    width: 60vw;
+    border:2px  solid saddlebrown;
+    border-radius:  1% 20% / 10% 20%;
+    background-color: rgba(46,46,64,0.5);
+    padding: 3rem;
+
+
+}
+
+#index table{
+    width: 97%;
+    margin-bottom: 10%;
+}
+th{
+    color: yellowgreen;
+    font-size: 1.8rem;
+    border-bottom: 2px solid skyblue;
+}
+td{
+    color: lightgoldenrodyellow;
+    font-size: 1.3rem;
+    border-bottom: 1px solid skyblue;
+}
+td a{
+    font-style: oblique;
+}
+td a:hover{
+    color: aquamarine;
+}
+
+tr{
+    text-align: left;
+
+}
