@@ -1,0 +1,36 @@
+#home_page{
+    overflow-y: auto;
+}
+
+#home_page section {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: space-around;
+}
+.video-container{
+    border-bottom: 2px solid  skyblue;
+    height: 300px;
+    width: 400px;
+    margin-bottom: 2rem;
+
+
+}
+video{
+    height: 276px;
+    width: 398px;
+}
+.vid-info{
+    height: 1.5rem;
+    padding: 0.5rem;
+}
+h6{
+    font-style: italic;
+    font-weight: bold;
+    font-size: 1.5rem;
+    white-space: nowrap;
+    text-overflow:ellipsis ;
+    overflow: hidden;
+    width: 90%;
+}
