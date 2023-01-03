@@ -2,7 +2,7 @@
     overflow-y: auto;
 }
 
-#home_page section {
+#home_page> div {
     margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
