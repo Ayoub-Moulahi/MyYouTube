@@ -7,6 +7,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"regexp"
 	"strings"
+	"unicode"
 )
 
 type validationFunction func(user *User) error
@@ -29,15 +30,12 @@ const hash_key = "secret_hash"
 type userValidator struct {
 	ui          UserInterface
 	emailRegExp *regexp.Regexp
-	pwdRegExp   *regexp.Regexp
 }
 
 func newUserValidator(ui UserInterface) *userValidator {
 	return &userValidator{
 		ui:          ui,
-		emailRegExp: regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,16}$`),
-		pwdRegExp:   regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,16}$`),
-		//pwdRegExp:   regexp.MustCompile(`^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[*.!@$%^&(){}[]:;<>,.?/~_+-=|\]).{8,32}$`),
+		emailRegExp: regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"),
 	}
 
 }
@@ -120,8 +118,6 @@ func (uv *userValidator) UpdateUserRemember(ctx context.Context, id int32, remem
 
 }
 
-//TODO add updateRemember() and figure out a way to  create Authenticate
-
 // validating and normalizing password
 func (uv *userValidator) requirePwd(u *User) error {
 	if u.Password == "" {
@@ -140,10 +136,31 @@ func (uv *userValidator) checkPwdLen(u *User) error {
 }
 
 func (uv *userValidator) checkPasswordMatch(u *User) error {
-	if uv.pwdRegExp.MatchString(u.Password) == false {
-		return ErrPasswordMatch
+
+	x, y, z := verifyPassword(u.Password)
+	if x == true && y == true && z == true {
+		return nil
 	}
-	return nil
+	return ErrPasswordMatch
+}
+func verifyPassword(s string) (number, upper, special bool) {
+	letters := 0
+	for _, c := range s {
+		switch {
+		case unicode.IsNumber(c):
+			number = true
+		case unicode.IsUpper(c):
+			upper = true
+			letters++
+		case unicode.IsPunct(c) || unicode.IsSymbol(c):
+			special = true
+		case unicode.IsLetter(c) || c == ' ':
+			letters++
+		default:
+		}
+	}
+
+	return
 }
 
 func (uv *userValidator) hashPassword(u *User) error {
