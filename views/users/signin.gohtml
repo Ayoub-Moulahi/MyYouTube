@@ -1,9 +1,10 @@
 {{define "main_content"}}
-    <main id="sign_in_form">
+    <main style="width: 100%;display: flex;justify-content: center;align-items: center">
+    <div id="sign_in_form">
         <p class="form_text">------ Create An Account ------</p>
         <form action="/signin" method="post">
             <div class="inputdiv">
-                <label for="Name">Full Name</label>
+                <label for="Name">Name</label>
                 <input type="text" name="Name" id="Name" placeholder="please enter your full name here" autofocus >
             </div>
             <br>
@@ -13,7 +14,7 @@
             </div>
             <br>
             <div class="inputdiv">
-                <label for="date">date of birth</label>
+                <label for="date">birthdate</label>
                 <input type="date" name="date" id="date" placeholder="your date of birth">
             </div>
             <br>
@@ -27,5 +28,6 @@
             <button type="submit" class="btn_submit">Sign IN</button>
         </form>
 
+    </div>
     </main>
 {{end}}

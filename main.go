@@ -1,17 +1,33 @@
 package main
 
 import (
+	"fmt"
 	"github.com/Ayoub-Moulahi/MyYouTube/controllers"
+	"github.com/Ayoub-Moulahi/MyYouTube/models"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
 
 func main() {
+	dialect := "postgres"
+	connInfo := "postgresql://ayoub:myPwd@localhost:5432/youtube?sslmode=disable"
+	//ctx := context.Background()
+	services, err := models.NewService(dialect, connInfo)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+
 	stc := controllers.NewStaticController()
+	uc := controllers.NewUserController(services)
 	r := mux.NewRouter()
-	r.Handle("/", stc.HomePage)
-	r.Handle("/contact", stc.ContactPage)
+	//static page route
+	r.Handle("/", stc.HomePage).Methods("GET")
+	r.Handle("/contact", stc.ContactPage).Methods("GET")
+	r.Handle("/login", uc.LogIN).Methods("GET")
+	r.Handle("/signin", uc.SignIN).Methods("GET")
+	r.HandleFunc("/signin", uc.SingIN_POST).Methods("POST")
+
 	// Assets
 	//serving  JS
 	assetHandler := http.FileServer(http.Dir("./javascript/"))
