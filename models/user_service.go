@@ -3,10 +3,12 @@ package models
 import (
 	"context"
 	"database/sql"
+	"github.com/Ayoub-Moulahi/MyYouTube/setting"
 	"golang.org/x/crypto/bcrypt"
 )
 
-type UserInterface interface {
+// UserDbInterface  used to define the interface for interacting with the user database
+type UserDbInterface interface {
 	CreateUser(ctx context.Context, arg User) (*User, error)
 	DeleteUser(ctx context.Context, id int32) error
 	GetUserByEmail(ctx context.Context, email string) (*User, error)
@@ -16,8 +18,14 @@ type UserInterface interface {
 	UpdateUserPassword(ctx context.Context, id int32, password string) error
 	UpdateUserRemember(ctx context.Context, id int32, remember string) error
 }
+
+// UserInterface used to define the interface to interact with user model
+type UserInterface interface {
+	UserDbInterface
+	Authenticate(email, password string) (*User, error)
+}
 type userStruct struct {
-	UserInterface
+	UserDbInterface
 }
 
 func NewUserInterface(db *sql.DB) UserInterface {
@@ -31,12 +39,16 @@ func NewUserInterface(db *sql.DB) UserInterface {
 }
 
 func (ui *userStruct) Authenticate(email, password string) (*User, error) {
+	config, err := setting.LoadConfig("../")
+	if err != nil {
+		return nil, ErrApp
+	}
 	var ctx = context.Background()
 	tmp, err := ui.GetUserByEmail(ctx, email)
 	if err != nil {
-		return nil, err
+		return nil, ErrNoAccount
 	}
-	err = bcrypt.CompareHashAndPassword([]byte(tmp.PasswordHash), []byte(password+pwd_pepper))
+	err = bcrypt.CompareHashAndPassword([]byte(tmp.PasswordHash), []byte(password+config.PasswordPepper))
 	if err == bcrypt.ErrMismatchedHashAndPassword {
 		return nil, ErrPasswordIncorrect
 	} else if err != nil {

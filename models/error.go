@@ -22,6 +22,7 @@ const (
 	ErrEmailRequired publicError   = "ERROR: Email required ,please make sure to provide your email"
 	ErrInvalidEmail  publicError   = "ERROR:Email invalid please provide a valid email "
 	ErrEmailTaken    publicError   = "ERROR: this email is already in use ,please try another email"
+	ErrNoAccount     publicError   = "ERROR:you don't have an account "
 	ErrTokenNotSet   publicError   = "ERROR: Remember not set"
 	ErrIdInvalid     publicError   = "ERROR: Id can't be negative"
 	ErrApp           internalError = "Something went wrong,please try again later.If the problem persist please contact us "

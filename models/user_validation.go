@@ -3,6 +3,7 @@ package models
 import (
 	"context"
 	"database/sql"
+	"github.com/Ayoub-Moulahi/MyYouTube/setting"
 	"github.com/Ayoub-Moulahi/MyYouTube/token"
 	"golang.org/x/crypto/bcrypt"
 	"regexp"
@@ -23,24 +24,21 @@ func runValidationFucnction(u *User, functions ...validationFunction) error {
 	return nil
 }
 
-// TODO move this to config file
-const pwd_pepper = "secret_pwd_pepper"
-const hash_key = "secret_hash"
-
 type userValidator struct {
-	ui          UserInterface
+	ui          UserDbInterface
 	emailRegExp *regexp.Regexp
 }
 
-func newUserValidator(ui UserInterface) *userValidator {
+func newUserValidator(ui UserDbInterface) *userValidator {
 	return &userValidator{
 		ui:          ui,
-		emailRegExp: regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"),
+		emailRegExp: regexp.MustCompile(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,16}$`),
 	}
 
 }
 
-// implementing validation
+//implementing validation
+
 func (uv *userValidator) CreateUser(ctx context.Context, arg User) (*User, error) {
 
 	err := runValidationFucnction(&arg, uv.requireEmail, uv.normalizeEmail, uv.checkValidEmail, uv.checkAvailableEmail, uv.requirePwd, uv.checkPwdLen, uv.checkPasswordMatch, uv.hashPassword, uv.pwdHashRequired, uv.setRemember, uv.hashRemember)
@@ -164,10 +162,15 @@ func verifyPassword(s string) (number, upper, special bool) {
 }
 
 func (uv *userValidator) hashPassword(u *User) error {
+	config, err := setting.LoadConfig("../")
+	if err != nil {
+		return ErrApp
+	}
+
 	if u.Password == "" {
 		return nil
 	}
-	tmp, err := bcrypt.GenerateFromPassword([]byte(u.Password+pwd_pepper), bcrypt.DefaultCost)
+	tmp, err := bcrypt.GenerateFromPassword([]byte(u.Password+config.PasswordPepper), bcrypt.DefaultCost)
 	if err != nil {
 		return ErrApp
 	}
@@ -220,21 +223,27 @@ func (uv *userValidator) checkAvailableEmail(u *User) error {
 
 // other validation :
 func (uv *userValidator) setRemember(u *User) error {
-	if u.Remember == "" {
-		newToken, err := token.GenerateToken(token.RememberTokenBytes)
-		if err != nil {
-			return err
-		}
-		u.Remember = newToken
+	if u.Remember != "" {
 		return nil
 	}
-	return ErrTokenNotSet
+
+	newToken, err := token.GenerateToken(token.RememberTokenBytes)
+	if err != nil {
+		return ErrTokenNotSet
+	}
+	u.Remember = newToken
+	return nil
+
 }
 
 func (uv *userValidator) hashRemember(u *User) error {
+	config, err := setting.LoadConfig("../")
+	if err != nil {
+		return ErrApp
+	}
 	if u.Remember == "" {
 		return nil
 	}
-	u.RememberHash = token.HashToken(u.Remember, hash_key)
+	u.RememberHash = token.HashToken(u.Remember, config.HashKey)
 	return nil
 }

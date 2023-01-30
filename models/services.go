@@ -6,6 +6,7 @@ import (
 
 type Services struct {
 	UserInter UserInterface
+	db        *sql.DB
 }
 
 func NewService(dialect, connInfo string) (*Services, error) {
@@ -15,6 +16,7 @@ func NewService(dialect, connInfo string) (*Services, error) {
 	}
 	return &Services{
 		UserInter: NewUserInterface(db),
+		db:        db,
 	}, nil
 
 }

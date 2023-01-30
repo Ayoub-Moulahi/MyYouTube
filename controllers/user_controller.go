@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/Ayoub-Moulahi/MyYouTube/models"
+	"github.com/Ayoub-Moulahi/MyYouTube/token"
 	"github.com/Ayoub-Moulahi/MyYouTube/views"
 	"github.com/gorilla/schema"
 	_ "github.com/lib/pq"
@@ -14,14 +15,14 @@ import (
 type UserController struct {
 	SignIN *views.View
 	LogIN  *views.View
+	IndexP *views.View
 	us     *models.Services
 }
 
-var decoder = schema.NewDecoder()
 var ctx = context.Background()
 
-// User holds the parsed fields of the  sign in form
-type User struct {
+// UserSg holds the parsed fields of the  sign in form
+type UserSg struct {
 	Name      string `schema:"Name,required"`
 	Email     string `schema:"email,required"`
 	Birthdate string `schema:"date,required"`
@@ -30,36 +31,120 @@ type User struct {
 
 // NewUserController initialize a User
 func NewUserController(us *models.Services) *UserController {
-	sign_in, _ := views.NewView("layout", "views/users/signin.gohtml")
-	log_in, _ := views.NewView("layout", "views/users/login.gohtml")
+	signIn, _ := views.NewView("layout", "views/users/signin.gohtml")
+	logIn, _ := views.NewView("layout", "views/users/login.gohtml")
+	index, _ := views.NewView("layout", "views/users/index_page.gohtml")
 
 	return &UserController{
-		sign_in,
-		log_in,
+		signIn,
+		logIn,
+		index,
 		us,
 	}
 }
 
+// SingIN_POST used create a user when a user sign in
 func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
+	var usg UserSg
+	err := parseForm(r, &usg)
 	if err != nil {
-		fmt.Println(err.Error())
+		fmt.Println(err)
+		uc.SignIN.RenderView(w, r, err.Error())
+		return
 	}
-	var u User
-	err = decoder.Decode(&u, r.PostForm)
-	if err != nil {
-		fmt.Println(err.Error())
-	}
-	date, _ := time.Parse("2006-01-02", u.Birthdate)
-	tmp, err := uc.us.UserInter.CreateUser(ctx, models.User{
-
-		Username:  u.Name,
-		Email:     u.Email,
+	date, _ := time.Parse("2023-01-28", usg.Birthdate)
+	tmp := models.User{
+		Username:  usg.Name,
+		Email:     usg.Email,
 		Birthdate: date,
-		Password:  u.Password,
-	})
+		Password:  usg.Password,
+	}
+	_, err = uc.us.UserInter.CreateUser(ctx, tmp)
 	if err != nil {
 		fmt.Println(err.Error())
+		uc.SignIN.RenderView(w, r, err.Error())
+		return
 	}
-	fmt.Println(tmp)
+	err = uc.createSetCookies(w, &tmp)
+	if err != nil {
+		http.Redirect(w, r, "/login", http.StatusFound)
+		return
+	}
+	http.Redirect(w, r, "/index", http.StatusFound)
+
+}
+
+// Userlg holds the parsed fields of the  login form
+type Userlg struct {
+	Email    string `schema:"email,required"`
+	Password string `schema:"pwd,required"`
+}
+
+func (uc *UserController) LogIN_POST(w http.ResponseWriter, r *http.Request) {
+	var ulg Userlg
+	err := parseForm(r, &ulg)
+	if err != nil {
+		uc.LogIN.RenderView(w, r, err.Error())
+	}
+	tmp, err := uc.us.UserInter.Authenticate(ulg.Email, ulg.Password)
+	if err != nil {
+		switch err {
+		case models.ErrNoAccount:
+			fmt.Println(models.ErrNoAccount)
+		default:
+			fmt.Println(err.Error())
+
+		}
+		uc.LogIN.RenderView(w, r, nil)
+		return
+	}
+	err = uc.createSetCookies(w, tmp)
+	if err != nil {
+		fmt.Println(err.Error())
+		uc.LogIN.RenderView(w, r, nil)
+		return
+	}
+
+	http.Redirect(w, r, "/index", http.StatusFound)
+
+}
+
+// createSetCookies is a helper method used to set cookies anytime a user sign in or log in
+func (uc *UserController) createSetCookies(w http.ResponseWriter, u *models.User) error {
+	if u.Remember == "" {
+		t, err := token.GenerateToken(token.RememberTokenBytes)
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+		}
+		u.Remember = t
+
+		err = uc.us.UserInter.UpdateUserRemember(ctx, u.ID, u.Remember)
+		if err != nil {
+			fmt.Println(err.Error())
+			return err
+
+		}
+	}
+	cookie := http.Cookie{
+		Name:     "token",
+		Value:    u.Remember,
+		HttpOnly: true,
+	}
+	http.SetCookie(w, &cookie)
+	return nil
+}
+
+// parseForm a helper function used to parse form
+func parseForm(r *http.Request, destination interface{}) error {
+	var decoder = schema.NewDecoder()
+	if err := r.ParseForm(); err != nil {
+
+		return err
+	}
+	err := decoder.Decode(destination, r.PostForm)
+	if err != nil {
+		return err
+	}
+	return nil
 }
