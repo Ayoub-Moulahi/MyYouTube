@@ -46,10 +46,12 @@ func NewUserController(us *models.Services) *UserController {
 // SingIN_POST used create a user when a user sign in
 func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
 	var usg UserSg
+	//TODO fix this
+
 	err := parseForm(r, &usg)
 	if err != nil {
 		fmt.Println(err)
-		uc.SignIN.RenderView(w, r, err.Error())
+		uc.SignIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 	date, _ := time.Parse("2023-01-28", usg.Birthdate)
@@ -62,7 +64,7 @@ func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
 	_, err = uc.us.UserInter.CreateUser(ctx, tmp)
 	if err != nil {
 		fmt.Println(err.Error())
-		uc.SignIN.RenderView(w, r, err.Error())
+		uc.SignIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 	err = uc.createSetCookies(w, &tmp)
@@ -84,7 +86,7 @@ func (uc *UserController) LogIN_POST(w http.ResponseWriter, r *http.Request) {
 	var ulg Userlg
 	err := parseForm(r, &ulg)
 	if err != nil {
-		uc.LogIN.RenderView(w, r, err.Error())
+		uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 	}
 	tmp, err := uc.us.UserInter.Authenticate(ulg.Email, ulg.Password)
 	if err != nil {
@@ -95,13 +97,13 @@ func (uc *UserController) LogIN_POST(w http.ResponseWriter, r *http.Request) {
 			fmt.Println(err.Error())
 
 		}
-		uc.LogIN.RenderView(w, r, nil)
+		uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 	err = uc.createSetCookies(w, tmp)
 	if err != nil {
 		fmt.Println(err.Error())
-		uc.LogIN.RenderView(w, r, nil)
+		uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 

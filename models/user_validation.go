@@ -51,7 +51,7 @@ func (uv *userValidator) CreateUser(ctx context.Context, arg User) (*User, error
 
 func (uv *userValidator) DeleteUser(ctx context.Context, id int32) error {
 	if id < 0 {
-		return ErrIdInvalid
+		return ErrApp
 	}
 	return uv.ui.DeleteUser(ctx, id)
 }
@@ -67,7 +67,7 @@ func (uv *userValidator) GetUserByEmail(ctx context.Context, email string) (*Use
 
 func (uv *userValidator) GetUserByID(ctx context.Context, id int32) (*User, error) {
 	if id < 0 {
-		return nil, ErrIdInvalid
+		return nil, ErrApp
 	}
 	return uv.ui.GetUserByID(ctx, id)
 }
@@ -81,7 +81,7 @@ func (uv *userValidator) GetUserByRemember(ctx context.Context, remember string)
 }
 func (uv *userValidator) UpdateUserEmail(ctx context.Context, id int32, email string) error {
 	if id < 0 {
-		return ErrIdInvalid
+		return ErrApp
 	}
 	u := User{Email: email}
 	err := runValidationFucnction(&u, uv.requireEmail, uv.normalizeEmail, uv.checkValidEmail, uv.checkAvailableEmail)
@@ -92,7 +92,7 @@ func (uv *userValidator) UpdateUserEmail(ctx context.Context, id int32, email st
 }
 func (uv *userValidator) UpdateUserPassword(ctx context.Context, id int32, password string) error {
 	if id < 0 {
-		return ErrIdInvalid
+		return ErrApp
 	}
 	u := User{Password: password}
 	err := runValidationFucnction(&u, uv.requirePwd, uv.checkPwdLen, uv.checkPasswordMatch, uv.hashPassword, uv.pwdHashRequired)
@@ -105,7 +105,7 @@ func (uv *userValidator) UpdateUserPassword(ctx context.Context, id int32, passw
 
 func (uv *userValidator) UpdateUserRemember(ctx context.Context, id int32, remember string) error {
 	if id < 0 {
-		return ErrIdInvalid
+		return ErrApp
 	}
 	u := User{Remember: remember}
 	err := runValidationFucnction(&u, uv.setRemember, uv.hashRemember)
@@ -229,7 +229,7 @@ func (uv *userValidator) setRemember(u *User) error {
 
 	newToken, err := token.GenerateToken(token.RememberTokenBytes)
 	if err != nil {
-		return ErrTokenNotSet
+		return ErrApp
 	}
 	u.Remember = newToken
 	return nil

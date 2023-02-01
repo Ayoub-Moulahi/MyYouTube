@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/Ayoub-Moulahi/MyYouTube/models"
 	"github.com/Ayoub-Moulahi/MyYouTube/setting"
+	"github.com/Ayoub-Moulahi/MyYouTube/views"
 	"github.com/gorilla/sessions"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
@@ -56,7 +57,7 @@ func (uc *UserController) CompleteAuth(w http.ResponseWriter, r *http.Request) {
 	user, err := gothic.CompleteUserAuth(w, r)
 	if err != nil {
 		fmt.Println(err)
-		uc.LogIN.RenderView(w, r, nil)
+		uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 	}
 	_, err = uc.us.UserInter.Authenticate(user.Email, config.DefaultPwd)
 	if err == models.ErrNoAccount {
@@ -70,12 +71,12 @@ func (uc *UserController) CompleteAuth(w http.ResponseWriter, r *http.Request) {
 		})
 		if serr != nil {
 			fmt.Println(serr.Error())
-			uc.LogIN.RenderView(w, r, nil)
+			uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 			return
 		}
 	} else if err != nil {
 		fmt.Println(err.Error())
-		uc.LogIN.RenderView(w, r, nil)
+		uc.LogIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 

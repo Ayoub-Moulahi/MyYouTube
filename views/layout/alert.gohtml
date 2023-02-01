@@ -1,0 +1,11 @@
+{{define "alert"}}
+<article id="alert-content">
+    <div id="alert" class="alert {{.AlertType}}">
+        <button type="button" id="btn_alert">
+            <span>&times;</span>
+        </button>
+        <p class="p_alert"> {{.Msg}} </p>
+
+    </div>
+</article>
+{{end}}

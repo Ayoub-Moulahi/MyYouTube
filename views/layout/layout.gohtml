@@ -18,6 +18,8 @@
         <link rel="stylesheet" href="/css/update_channel.css">
         <link rel="stylesheet" href="/css/update_pwd.css">
         <link rel="stylesheet" href="/css/home.css">
+        <link rel="stylesheet" href="/css/alert.css">
+
 {{/*        <link rel="stylesheet" href="/css/">*/}}
         <!--    favicon -->
         <link rel="apple-touch-icon" sizes="180x180" href="/views/favicon/apple-touch-icon.png">
@@ -144,16 +146,21 @@
         </symbol>
 
     </svg>
+
     {{template "navbar" }}
     <div id="container">
-       {{template "main_content"}}
+        {{if .Alert}}
+        {{template "alert".Alert}}
+        {{end}}
+       {{template "main_content".Content}}
         <footer class="centered">
             <svg> <use href="#copyright-svg"></use></svg>
             <p>Copyright Ayoub Moulahi 2022</p>
         </footer>
     </div>
 
-
+    <script src="../../javascript/alert.js"></script>
+    <script src="../../javascript/video_displayer.js"></script>
     </body>
     </html>
 {{end}}
