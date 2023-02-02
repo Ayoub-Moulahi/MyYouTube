@@ -15,6 +15,7 @@ import (
 type UserController struct {
 	SignIN *views.View
 	LogIN  *views.View
+	//TODO move this to the channels models
 	IndexP *views.View
 	us     *models.Services
 }
@@ -42,11 +43,13 @@ func NewUserController(us *models.Services) *UserController {
 		us,
 	}
 }
+func (uc *UserController) Index(w http.ResponseWriter, r *http.Request) {
+	uc.IndexP.RenderView(w, r, views.CreateOtherAlert(views.AlertSuccess, "Welcome"))
+}
 
 // SingIN_POST used create a user when a user sign in
 func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
 	var usg UserSg
-	//TODO fix this
 
 	err := parseForm(r, &usg)
 	if err != nil {
@@ -54,7 +57,7 @@ func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
 		uc.SignIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
-	date, _ := time.Parse("2023-01-28", usg.Birthdate)
+	date, _ := time.Parse("2006-01-02", usg.Birthdate)
 	tmp := models.User{
 		Username:  usg.Name,
 		Email:     usg.Email,
@@ -63,13 +66,13 @@ func (uc *UserController) SingIN_POST(w http.ResponseWriter, r *http.Request) {
 	}
 	_, err = uc.us.UserInter.CreateUser(ctx, tmp)
 	if err != nil {
-		fmt.Println(err.Error())
 		uc.SignIN.RenderView(w, r, views.CreateAlert(err))
 		return
 	}
 	err = uc.createSetCookies(w, &tmp)
 	if err != nil {
-		http.Redirect(w, r, "/login", http.StatusFound)
+		fmt.Println(err)
+		uc.LogIN.RenderView(w, r, views.CreateOtherAlert(views.AlertWarning, "Your account was created successfully,but you need to log in to proceed "))
 		return
 	}
 	http.Redirect(w, r, "/index", http.StatusFound)

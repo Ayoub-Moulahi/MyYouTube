@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Ayoub-Moulahi/MyYouTube/controllers"
+	"github.com/Ayoub-Moulahi/MyYouTube/middelware"
 	"github.com/Ayoub-Moulahi/MyYouTube/models"
 	"github.com/Ayoub-Moulahi/MyYouTube/setting"
 	"github.com/gorilla/mux"
@@ -24,19 +25,22 @@ func main() {
 
 	stc := controllers.NewStaticController()
 	uc := controllers.NewUserController(services)
+
 	r := mux.NewRouter()
 	//static page route
 	r.Handle("/", stc.HomePage).Methods("GET")
 	r.Handle("/contact", stc.ContactPage).Methods("GET")
 	//user route
 	r.Handle("/login", uc.LogIN).Methods("GET")
-	r.Handle("/index", uc.IndexP).Methods("GET")
 	r.Handle("/signin", uc.SignIN).Methods("GET")
 	r.HandleFunc("/signin", uc.SingIN_POST).Methods("POST")
 	r.HandleFunc("/login", uc.LogIN_POST).Methods("POST")
 	//third party Oauth
 	r.HandleFunc("/auth/{provider}", uc.BeginAuth)
 	r.HandleFunc("/auth/{provider}/callback", uc.CompleteAuth)
+	//channels
+	md := middelware.MiddUser{UserInterface: services.UserInter}
+	r.HandleFunc("/index", md.RequireUser(uc.Index)).Methods("GET")
 
 	// Assets
 	//serving  JS
